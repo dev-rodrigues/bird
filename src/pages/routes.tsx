@@ -7,7 +7,7 @@ export default function AppRoutes() {
   return(
     <Routes>
       <Route index element={<Index />} />
-      <Route element={<Dashboard />} />
+      <Route path={"/dashboard"} element={<Dashboard />} />
       <Route path="about" element={<AboutPage />} />
     </Routes>
   )
