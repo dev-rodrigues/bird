@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router";
-import IndexPage from "./index-page";
+import Index from "./index.tsx";
 import AboutPage from "./about";
+import Dashboard from "@/pages/dashboard.tsx";
 
 export default function AppRoutes() {
   return(
     <Routes>
-      <Route index element={<IndexPage />} />
+      <Route index element={<Index />} />
+      <Route element={<Dashboard />} />
       <Route path="about" element={<AboutPage />} />
     </Routes>
   )
