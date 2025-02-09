@@ -38,7 +38,7 @@ export function Sidebar() {
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Link to={"/dashboard"}
+                                <Link to={"/campaign"}
                                       className={
                                           "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
                                       }
@@ -54,13 +54,13 @@ export function Sidebar() {
 
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Link to={"/dashboard"}
+                                <Link to={"/financial"}
                                       className={
                                           "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
                                       }
                                 >
                                     <HandCoins className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Inicio</span>
+                                    <span className={"sr-only"}>Financeiro</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
@@ -80,11 +80,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <LogOut className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Inicio</span>
+                                    <span className={"sr-only"}>Sair</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Financeiro
+                                Sair
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
@@ -121,7 +121,7 @@ export function Sidebar() {
                                     Inicio
                                 </Link>
 
-                                <Link to={"/dashboard"}
+                                <Link to={"/campaign"}
                                       className={
                                           "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
                                 >
@@ -129,7 +129,7 @@ export function Sidebar() {
                                     Campanha
                                 </Link>
 
-                                <Link to={"/dashboard"}
+                                <Link to={"/financial"}
                                       className={
                                           "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
                                 >

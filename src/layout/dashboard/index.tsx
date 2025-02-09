@@ -6,7 +6,9 @@ export function DashboardLayout() {
         <div className={"min-h-screen bg-background font-sans"}>
             <Sidebar/>
 
-            <Outlet />
+            <main className={"sm:ml-14 p-4"}>
+                <Outlet/>
+            </main>
         </div>
     )
 }

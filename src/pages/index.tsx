@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {SignUpDialog} from "@/components/modals/SignUpDialog.tsx";
+import {SignUpDialog} from "@/modals/SignUpDialog.tsx";
 
 export default function Index() {
 
@@ -38,7 +38,6 @@ export default function Index() {
                     </div>
 
                     <div className="mt-6 border-t pt-4">
-
                         <SignUpDialog isOpen={isOpen} setIsOpen={setIsOpen} />
                     </div>
                 </div>

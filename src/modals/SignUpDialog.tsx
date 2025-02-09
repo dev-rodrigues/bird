@@ -9,11 +9,8 @@ import InputMask from "react-input-mask";
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {Props} from "@/modals/utlis/types.ts";
 
-interface Props {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-}
 
 export function SignUpDialog({isOpen, setIsOpen}: Props) {
 
