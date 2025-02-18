@@ -16,6 +16,7 @@ import CampaignBudgetAndScheduleStep from "@/components/steps/campaing/CampaignB
 import CampaignLocalizationStep from "@/components/steps/campaing/CampaignLocalizationStep.tsx";
 import {Props} from "@/modals/utlis/types.ts";
 import {Step, StepComponentProps, StepData} from "@/modals/CreateCampaignDialogTypes.ts";
+import CampaignMediasStep from "@/components/steps/campaing/CampaingMediasStep.tsx";
 
 export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
     const [step, setStep] = useState(0);
@@ -33,13 +34,18 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
             key: "budget",
         },
         {
+            label: "Medias",
+            component: CampaignMediasStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
+            key: "medias",
+        },
+        {
             label: "Localization",
-            component: CampaignLocalizationStep,
+            component: CampaignLocalizationStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
             key: "localization",
         },
         {
             label: "Resume",
-            component: CampaignResumeStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
+            component: CampaignResumeStep,
             key: "resume",
         },
     ];
@@ -72,7 +78,7 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
         <Dialog open={isOpen} onOpenChange={onCloseModal}>
             <DialogTrigger asChild>
                 <Button className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
-                    Criar nova campanha
+                    Create new campaign
                 </Button>
             </DialogTrigger>
             <DialogContent className="w-[80vw] max-w-4xl min-h-[400px] max-h-[80vh] flex flex-col">
@@ -82,6 +88,9 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
 
                 <Card>
                     <h2 className="text-xl text-center font-semibold">{steps[step].label}</h2>
+                    <Separator className="mb-4"/>
+
+
                     <CardContent className="min-h-full">
                         <motion.div
                             key={step}
@@ -101,12 +110,12 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
 
                         <div className="flex justify-between mt-4">
                             <Button variant="outline" onClick={prevStep} disabled={step === 0}>
-                                Voltar
+                                Back
                             </Button>
                             {isLastStep ? (
-                                <Button onClick={submitData}>Finalizar</Button>
+                                <Button onClick={submitData}>Save</Button>
                             ) : (
-                                <Button onClick={nextStep}>Próximo</Button>
+                                <Button onClick={nextStep}>Next</Button>
                             )}
                         </div>
                     </CardContent>

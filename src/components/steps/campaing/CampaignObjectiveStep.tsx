@@ -3,20 +3,20 @@ import {Megaphone, MessageCircle, Store} from "lucide-react";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card.tsx";
 import {StepComponentProps} from "@/modals/CreateCampaignDialogTypes.ts";
 import {useState} from "react";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 
 const descriptions: Record<string, { title: string; text: string }> = {
     reconhecimento: {
-        title: "🌟 Reconhecimento",
-        text: "Aumente o reconhecimento da sua marca, fazendo com que mais pessoas conheçam seu produto ou serviço.",
+        title: "🌟 Recognition",
+        text: "Increase your brand recognition, making more people aware of your product or service.",
     },
     engajamento: {
-        title: "💬 Engajamento",
-        text: "Incentive interações com seu conteúdo, aumentando curtidas, compartilhamentos e comentários.",
+        title: "💬 Engagement",
+        text: "Encourage interactions with your content, increasing likes, shares and comments.",
     },
     vendas: {
-        title: "🛒 Vendas",
-        text: "Impulsione suas vendas promovendo produtos diretamente para o público.",
+        title: "🛒 Sales",
+        text: "Boost your sales by promoting products directly to the public.",
     },
 };
 
@@ -28,8 +28,10 @@ export function CampaignObjectiveStep({
     const [selected, setSelected] = useState<string>(data ?? "reconhecimento");
 
     const handleChange = (value: string) => {
-        setSelected(value);
-        updateData(value);
+        if (value) {
+            setSelected(value);
+            updateData(value);
+        }
     };
 
     return (
@@ -48,7 +50,7 @@ export function CampaignObjectiveStep({
                     Recognition
                 </ToggleGroupItem>
 
-                <ToggleGroupItem value="Engagement" aria-label="Engagement"
+                <ToggleGroupItem value="engajamento" aria-label="Engagement"
                                  className="w-full flex items-center justify-start gap-2 text-left"
                 >
                     <MessageCircle className="h-4 w-4"/>
