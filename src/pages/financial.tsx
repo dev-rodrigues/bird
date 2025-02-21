@@ -26,15 +26,13 @@ export interface FinancialProps {
     name: string;
     from: string;
     to: string;
-    description: string;
     created_at: string;
 }
 
 const data: FinancialProps[] = [
     {
         id: "123123",
-        status: "Pago",
-        description: "boleto",
+        status: "pending",
         name: "[ENGAJ] [WPP] [BK] Whopper",
         from: "2025-01-01",
         to: "2025-02-10",
@@ -42,8 +40,7 @@ const data: FinancialProps[] = [
     },
     {
         id: "456456",
-        status: "Ativa",
-        description: "Boleto",
+        status: "active",
         name: "[AWARENESS] [FB] [MCD] Big Mac",
         from: "2025-02-15",
         to: "2025-03-20",
@@ -51,8 +48,7 @@ const data: FinancialProps[] = [
     },
     {
         id: "789789",
-        status: "vencido",
-        description: "Boleto",
+        status: "expired",
         name: "[PROMO] [IG] [KFC] Bucket",
         from: "2024-11-10",
         to: "2024-12-25",
@@ -60,8 +56,7 @@ const data: FinancialProps[] = [
     },
     {
         id: "987654",
-        status: "Pago",
-        description: "Boleto",
+        status: "paid",
         name: "[LEAD] [TT] [SB] Subway Combo",
         from: "2025-03-01",
         to: "2025-04-15",
@@ -69,8 +64,7 @@ const data: FinancialProps[] = [
     },
     {
         id: "654321",
-        status: "Pendente",
-        description: "Boleto",
+        status: "pending",
         name: "[RETARGET] [YT] [ST] Starbucks Latte",
         from: "2025-04-01",
         to: "2025-05-20",
@@ -102,20 +96,6 @@ export const columns: ColumnDef<FinancialProps>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({row}) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
-        cell: ({row}) => (
-            <div className="capitalize">{row.getValue("description")}</div>
-        ),
-    },
-    {
         accessorKey: "name",
         header: ({column}) => {
             return (
@@ -123,12 +103,20 @@ export const columns: ColumnDef<FinancialProps>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Name
+                    Campaign name
                     <ArrowUpDown/>
                 </Button>
             )
         },
         cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
+    },
+    {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({row}) => (
+            <div className="capitalize">{row.getValue("status")}</div>
+        )
+        ,
     },
     {
         accessorKey: "from",
@@ -159,21 +147,6 @@ export const columns: ColumnDef<FinancialProps>[] = [
             )
         },
         cell: ({row}) => <div className="lowercase">{row.getValue("to")}</div>,
-    },
-    {
-        accessorKey: "created_at",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Create At
-                    <ArrowUpDown/>
-                </Button>
-            )
-        },
-        cell: ({row}) => <div className="lowercase">{row.getValue("created_at")}</div>,
     },
     {
         id: "actions",
