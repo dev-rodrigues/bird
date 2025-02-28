@@ -5,6 +5,7 @@ import {DashboardLayout} from "@/layout/dashboard";
 import Dashboard from "@/pages/dashboard.tsx";
 import Campaign from "@/pages/campaign.tsx";
 import Financial from "@/pages/financial.tsx";
+import NotFound from "./pages/NotFound.tsx"; 
 
 export default function AppRoutes() {
   return(
@@ -14,6 +15,7 @@ export default function AppRoutes() {
           <Route index path={"dashboard"} element={<Dashboard />}/>
           <Route index path={"campaign"} element={<Campaign />}/>
           <Route index path={"financial"} element={<Financial />}/>
+          <Route path="*" element={<NotFound />}/>
       </Route>
       <Route path="about" element={<AboutPage />} />
     </Routes>
