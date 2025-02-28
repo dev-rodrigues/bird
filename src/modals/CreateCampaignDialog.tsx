@@ -69,7 +69,8 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
     };
 
     const submitData = () => {
-        onCloseModal();
+        console.log(JSON.stringify(stepData))
+        // onCloseModal();
     };
 
     const CurrentStepComponent = steps[step].component;

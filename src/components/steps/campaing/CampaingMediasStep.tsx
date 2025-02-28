@@ -1,10 +1,12 @@
-import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
-import { useRef, useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import {Input} from "@/components/ui/input.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {useRef, useState, useEffect} from "react";
+import {Button} from "@/components/ui/button";
 import * as React from "react";
+import {StepComponentProps} from "@/modals/CreateCampaignDialogTypes.ts";
 
-export default function CampaignMediasStep() {
+export default function CampaignMediasStep({data, updateData}: StepComponentProps<"medias">) {
+
     const [videoPreview, setVideoPreview] = useState<string | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -17,11 +19,13 @@ export default function CampaignMediasStep() {
                 return;
             }
             setSelectedFile(file);
+            updateData([file])
         }
     };
 
     useEffect(() => {
         if (selectedFile) {
+            updateData([selectedFile]);
             const videoURL = URL.createObjectURL(selectedFile);
             setVideoPreview(videoURL);
 
@@ -72,7 +76,8 @@ export default function CampaignMediasStep() {
                             Your browser does not support video playback.
                         </video>
                     ) : (
-                        <div className="flex items-center justify-center h-40 bg-gray-100 rounded-lg border border-neutral-600">
+                        <div
+                            className="flex items-center justify-center h-40 bg-gray-100 rounded-lg border border-neutral-600">
                             <span className="text-gray-500">Video preview will appear here.</span>
                         </div>
                     )}

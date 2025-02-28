@@ -14,7 +14,7 @@ export interface StepData {
     resume?: {
         summary: string;
     };
-    medias?: []
+    medias?: File
 }
 
 export interface Step<K extends keyof StepData> {
