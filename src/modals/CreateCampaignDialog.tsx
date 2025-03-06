@@ -19,8 +19,15 @@ import {Step, StepComponentProps, StepData} from "@/modals/CreateCampaignDialogT
 import CampaignMediasStep from "@/components/steps/campaing/CampaingMediasStep.tsx";
 import {useMutation} from "@tanstack/react-query";
 import {createCampaign, mapStepDataToCampaignData} from "@/services/campaignService.ts";
+import {queryClient} from "@/main.tsx";
+import {toast} from "sonner";
 
-export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
+interface CreateCampaignDialogProps extends  Props{
+    currentPage: number;
+    size: number;
+}
+
+export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: CreateCampaignDialogProps) {
     const [step, setStep] = useState(0);
     const [stepData, setStepData] = useState<StepData>({});
 
@@ -74,7 +81,21 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
     };
 
     const {mutate} = useMutation({
-        mutationFn: createCampaign
+        mutationFn: createCampaign,
+        onSuccess: () => {
+            queryClient
+                .invalidateQueries({
+                    queryKey: ['campaigns', currentPage, size],
+                })
+                .catch(() => {
+                    toast.error("Error to invalidate campaign query");
+                })
+                .finally(() => {
+                    onCloseModal();
+                    toast.success("Campaign created successfully");
+                })
+            onCloseModal();
+        }
     })
 
     const submitData = () => {

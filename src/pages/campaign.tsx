@@ -217,7 +217,11 @@ export default function Campaign() {
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-6">Campaign</h1>
 
             <div className={"flex items-center py-4 gap-4"}>
-                <CreateCampaignDialog isOpen={showModal} setIsOpen={setShowModal}/>
+                <CreateCampaignDialog
+                    size={size}
+                    currentPage={page}
+                    isOpen={showModal}
+                    setIsOpen={setShowModal}/>
 
                 <Input
                     className="max-w-lg"
