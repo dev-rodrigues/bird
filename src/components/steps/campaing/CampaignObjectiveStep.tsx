@@ -6,15 +6,15 @@ import {useState} from "react";
 import {motion} from "framer-motion";
 
 const descriptions: Record<string, { title: string; text: string }> = {
-    reconhecimento: {
+    recognition: {
         title: "🌟 Recognition",
         text: "Increase your brand recognition, making more people aware of your product or service.",
     },
-    engajamento: {
+    engagement: {
         title: "💬 Engagement",
         text: "Encourage interactions with your content, increasing likes, shares and comments.",
     },
-    vendas: {
+    sales: {
         title: "🛒 Sales",
         text: "Boost your sales by promoting products directly to the public.",
     },
@@ -25,7 +25,7 @@ export function CampaignObjectiveStep({
                                           updateData,
                                       }: StepComponentProps<"objective">) {
 
-    const [selected, setSelected] = useState<string>(data ?? "reconhecimento");
+    const [selected, setSelected] = useState<string>(data ?? "recognition");
 
     const handleChange = (value: string) => {
         if (value) {
@@ -43,21 +43,21 @@ export function CampaignObjectiveStep({
                 defaultValue="Recognition"
                 className="flex flex-col gap-4"
             >
-                <ToggleGroupItem value="reconhecimento" aria-label="Recognition"
+                <ToggleGroupItem value="recognition" aria-label="recognition"
                                  className="w-full flex items-center justify-start gap-2 text-left"
                 >
                     <Megaphone className="h-4 w-4"/>
                     Recognition
                 </ToggleGroupItem>
 
-                <ToggleGroupItem value="engajamento" aria-label="Engagement"
+                <ToggleGroupItem value="engagement" aria-label="engagement"
                                  className="w-full flex items-center justify-start gap-2 text-left"
                 >
                     <MessageCircle className="h-4 w-4"/>
                     Engagement
                 </ToggleGroupItem>
 
-                <ToggleGroupItem value="vendas" aria-label="vendas"
+                <ToggleGroupItem value="sales" aria-label="sales"
                                  className="w-full flex items-center justify-start gap-2 text-left"
                 >
                     <Store className="h-4 w-4"/>

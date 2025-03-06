@@ -8,7 +8,7 @@ import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 export default function CampaignResumeStep({state}: StepComponentProps<keyof StepData>) {
 
     return (
-        <div className="max-h-[500px] overflow-y-auto">
+        <div className="max-h-[350px] overflow-y-auto mb-2">
             <CardHeader>
                 <CardDescription>Your ad campaign settings.</CardDescription>
             </CardHeader>

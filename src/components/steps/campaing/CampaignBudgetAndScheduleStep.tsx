@@ -146,23 +146,30 @@ export default function CampaignBudgetAndScheduleStep({data, updateData}: StepCo
                 <MoneyInput value={budgetValue} onChange={handleMoneyChange}/>
             </InputContainer>
 
-            <InputContainer label={"Start date"}>
-                <DateTimeDisplay
-                    date={scheduleStart.date}
-                    time={scheduleStart.time}
-                    onDateChange={(newDate) => handleDateChange("start", newDate)}
-                    onTimeChange={(newTime) => handleTimeChange("start", newTime)}
-                />
-            </InputContainer>
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
+                <div className="w-full lg:w-auto">
+                    <InputContainer label={"Start date"}>
+                        <DateTimeDisplay
+                            date={scheduleStart.date}
+                            time={scheduleStart.time}
+                            onDateChange={(newDate) => handleDateChange("start", newDate)}
+                            onTimeChange={(newTime) => handleTimeChange("start", newTime)}
+                        />
+                    </InputContainer>
+                </div>
 
-            <InputContainer label={"End date"}>
-                <DateTimeDisplay
-                    date={scheduleEnd.date}
-                    time={scheduleEnd.time}
-                    onDateChange={(newDate) => handleDateChange("end", newDate)}
-                    onTimeChange={(newTime) => handleTimeChange("end", newTime)}
-                />
-            </InputContainer>
+                <div className="w-full lg:w-auto">
+                    <InputContainer label={"End date"}>
+                        <DateTimeDisplay
+                            date={scheduleEnd.date}
+                            time={scheduleEnd.time}
+                            onDateChange={(newDate) => handleDateChange("end", newDate)}
+                            onTimeChange={(newTime) => handleTimeChange("end", newTime)}
+                        />
+                    </InputContainer>
+                </div>
+            </div>
+
         </div>
     );
 }

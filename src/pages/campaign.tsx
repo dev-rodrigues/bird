@@ -2,23 +2,32 @@ import {Input} from "@/components/ui/input.tsx";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
-    DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
-    DropdownMenuTrigger
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowUpDown, ChevronDown, MoreHorizontal} from "lucide-react";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {
     ColumnDef,
-    ColumnFiltersState, flexRender,
-    getCoreRowModel, getFilteredRowModel,
-    getPaginationRowModel, getSortedRowModel,
+    ColumnFiltersState,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
     SortingState,
-    useReactTable, VisibilityState
+    useReactTable,
+    VisibilityState,
 } from "@tanstack/react-table";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {CreateCampaignDialog} from "@/modals/CreateCampaignDialog.tsx";
+import {useCampaigns} from "@/services/campaignService.ts";
+import {format} from "date-fns";
 
 export interface CampaignProps {
     id: string;
@@ -29,54 +38,6 @@ export interface CampaignProps {
     goal: string;
     created_at: string;
 }
-
-const data: CampaignProps[] = [
-    {
-        id: "123123",
-        status: "Em rascunho",
-        goal: "Reconhecimento",
-        name: "[ENGAJ] [WPP] [BK] Whopper",
-        from: "2025-01-01",
-        to: "2025-02-10",
-        created_at: "2025-02-01",
-    },
-    {
-        id: "456456",
-        status: "Ativa",
-        goal: "Leads",
-        name: "[AWARENESS] [FB] [MCD] Big Mac",
-        from: "2025-02-15",
-        to: "2025-03-20",
-        created_at: "2025-02-10",
-    },
-    {
-        id: "789789",
-        status: "Encerrada",
-        goal: "Vendas",
-        name: "[PROMO] [IG] [KFC] Bucket",
-        from: "2024-11-10",
-        to: "2024-12-25",
-        created_at: "2024-10-30",
-    },
-    {
-        id: "987654",
-        status: "Pausada",
-        goal: "Vendas",
-        name: "[LEAD] [TT] [SB] Subway Combo",
-        from: "2025-03-01",
-        to: "2025-04-15",
-        created_at: "2025-02-20",
-    },
-    {
-        id: "654321",
-        status: "Ativa",
-        goal: "Vendas",
-        name: "[RETARGET] [YT] [ST] Starbucks Latte",
-        from: "2025-04-01",
-        to: "2025-05-20",
-        created_at: "2025-03-25",
-    }
-];
 
 export const columns: ColumnDef<CampaignProps>[] = [
     {
@@ -126,7 +87,7 @@ export const columns: ColumnDef<CampaignProps>[] = [
                     Name
                     <ArrowUpDown/>
                 </Button>
-            )
+            );
         },
         cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
     },
@@ -141,7 +102,7 @@ export const columns: ColumnDef<CampaignProps>[] = [
                     From
                     <ArrowUpDown/>
                 </Button>
-            )
+            );
         },
         cell: ({row}) => <div className="lowercase">{row.getValue("from")}</div>,
     },
@@ -156,7 +117,7 @@ export const columns: ColumnDef<CampaignProps>[] = [
                     To
                     <ArrowUpDown/>
                 </Button>
-            )
+            );
         },
         cell: ({row}) => <div className="lowercase">{row.getValue("to")}</div>,
     },
@@ -168,18 +129,21 @@ export const columns: ColumnDef<CampaignProps>[] = [
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Create At
+                    Created At
                     <ArrowUpDown/>
                 </Button>
-            )
+            );
         },
-        cell: ({row}) => <div className="lowercase">{row.getValue("created_at")}</div>,
+        cell: ({row}) => {
+            const date = new Date(row.getValue("created_at"));
+            return <div>{format(date, "dd/MM/yyyy HH:mm:ss")}</div>; // Formata a data
+        },
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({row}) => {
-            const payment = row.original
+            const campaign = row.original;
 
             return (
                 <DropdownMenu>
@@ -193,29 +157,36 @@ export const columns: ColumnDef<CampaignProps>[] = [
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem
                             onClick={() => {
-                                void navigator.clipboard.writeText(payment.id);
+                                void navigator.clipboard.writeText(campaign.id);
                             }}
                         >
-                            Copy payment ID
+                            Copy campaign ID
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            )
+            );
         },
     },
-]
+];
 
 export default function Campaign() {
-
     const [sorting, setSorting] = useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = useState({})
-    const [showModal, setShowModal] = useState(false)
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [page, setPage] = useState(0);
+    const size = 50;
+    const {data, isFetching, refetch} = useCampaigns(page, size);
+    const result = data?.content ?? [];
+
+    useEffect(() => {
+        void refetch();
+    }, [page, refetch]);
 
     const table = useReactTable({
-        data,
+        data: result,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -233,14 +204,20 @@ export default function Campaign() {
         },
     });
 
+    const nextPage = useCallback(() => {
+        setPage((prevPage) => prevPage + 1);
+    }, []);
+
+    const prevPage = useCallback(() => {
+        setPage((prevPage) => Math.max(prevPage - 1, 0));
+    }, []);
+
     return (
         <div className={"w-full"}>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-6">
-                Campaign
-            </h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-6">Campaign</h1>
 
             <div className={"flex items-center py-4 gap-4"}>
-                <CreateCampaignDialog isOpen={showModal} setIsOpen={setShowModal} />
+                <CreateCampaignDialog isOpen={showModal} setIsOpen={setShowModal}/>
 
                 <Input
                     className="max-w-lg"
@@ -273,88 +250,88 @@ export default function Campaign() {
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
 
             <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
+                {isFetching ? (
+                    <div className="h-8 flex items-center justify-center">Loading...</div>
+                ) : (
+                    <Table>
+                        <TableHeader>
+                            {table.getHeaderGroups().map((headerGroup) => (
+                                <TableRow key={headerGroup.id}>
+                                    {headerGroup.headers.map((header) => {
+                                        return (
+                                            <TableHead key={header.id}>
+                                                {header.isPlaceholder
+                                                    ? null
+                                                    : flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                            </TableHead>
+                                        );
+                                    })}
                                 </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
+                            ))}
+                        </TableHeader>
 
-                </Table>
+                        <TableBody>
+                            {table.getRowModel().rows?.length ? (
+                                table.getRowModel().rows.map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={row.getIsSelected() && "selected"}
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={columns.length}
+                                        className="h-24 text-center"
+                                    >
+                                        No results.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                )}
             </div>
+
             <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
-                </div>
                 <div className="space-x-2">
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
+                        onClick={() => prevPage()}
+                        disabled={page === 0} // Desabilita se estiver na primeira página
                     >
                         Previous
                     </Button>
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
+                        onClick={() => nextPage()}
+                        disabled={result.length < size} // Desabilita se não houver mais dados
                     >
                         Next
                     </Button>
                 </div>
             </div>
         </div>
-    )
+    );
 }

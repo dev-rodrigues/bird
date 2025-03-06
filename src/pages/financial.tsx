@@ -208,7 +208,7 @@ export default function Financial() {
     return (
         <div className={"w-full"}>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-6">
-                Campaign
+                Financial
             </h1>
 
             <div className={"flex items-center py-4 gap-4"}>

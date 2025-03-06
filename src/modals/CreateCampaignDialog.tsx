@@ -17,6 +17,8 @@ import CampaignLocalizationStep from "@/components/steps/campaing/CampaignLocali
 import {Props} from "@/modals/utlis/types.ts";
 import {Step, StepComponentProps, StepData} from "@/modals/CreateCampaignDialogTypes.ts";
 import CampaignMediasStep from "@/components/steps/campaing/CampaingMediasStep.tsx";
+import {useMutation} from "@tanstack/react-query";
+import {createCampaign, mapStepDataToCampaignData} from "@/services/campaignService.ts";
 
 export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
     const [step, setStep] = useState(0);
@@ -62,15 +64,26 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
     };
 
     const updateStepData = <K extends keyof StepData>(key: K, data: StepData[K]) => {
-        setStepData((prev) => ({
-            ...prev,
-            [key]: data,
-        }));
+        setStepData((prev) => {
+            console.log(`Atualizando stepData para a chave: ${key}`, data);
+            return {
+                ...prev,
+                [key]: data,
+            };
+        });
     };
 
+    const {mutate} = useMutation({
+        mutationFn: createCampaign
+    })
+
     const submitData = () => {
-        console.log(JSON.stringify(stepData))
-        // onCloseModal();
+        console.log("Dados da campanha:", {
+            ...stepData,
+            medias: stepData.medias ? stepData.medias.name : "Nenhum arquivo selecionado",
+        });
+
+        mutate(mapStepDataToCampaignData(stepData));
     };
 
     const CurrentStepComponent = steps[step].component;
@@ -92,7 +105,7 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
                     <Separator className="mb-4"/>
 
 
-                    <CardContent className="min-h-full">
+                    <CardContent className="">
                         <motion.div
                             key={step}
                             initial={{opacity: 0, x: 50}}
@@ -103,13 +116,12 @@ export function CreateCampaignDialog({isOpen, setIsOpen}: Props) {
                             <CurrentStepComponent
                                 state={stepData}
                                 data={stepData[steps[step].key]}
-                                updateData={(data: StepData[keyof StepData]) => updateStepData(steps[step].key, data)}
+                                updateData={(data) => updateStepData(steps[step].key, data)}
                             />
                         </motion.div>
 
-                        <Separator/>
 
-                        <div className="flex justify-between mt-4">
+                        <div className="flex justify-between ">
                             <Button variant="outline" onClick={prevStep} disabled={step === 0}>
                                 Back
                             </Button>
