@@ -1,7 +1,7 @@
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Link} from "react-router";
-import {PanelBottom, Origami, Home, HandCoins, Presentation, LogOut} from "lucide-react";
+import {PanelBottom, Origami, Home, HandCoins, Presentation, LogOut, MapPinned} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 
 export function Sidebar() {
@@ -65,6 +65,22 @@ export function Sidebar() {
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
                                 Financeiro
+                            </TooltipContent>
+                        </Tooltip>
+
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link to={"/map"}
+                                      className={
+                                          "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+                                      }
+                                >
+                                    <MapPinned className={"h-5 w-5"}/>
+                                    <span className={"sr-only"}>Mapa</span>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side={"right"}>
+                                Mapa
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>

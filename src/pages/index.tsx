@@ -7,10 +7,13 @@ export default function Index() {
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8">
+            <div
+                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8">
                 <div className="md:w-1/2 mb-6 md:mb-0">
                     <h1 className="text-2xl font-bold mb-4">Bird</h1>
-                    <p className="text-lg">A Bird ajuda você a se conectar com as pessoas de forma simples e direta, levando sua mensagem para as ruas com nossos telões de LED que chamam a atenção de todos que passam.</p>
+                    <p className="text-lg">A Bird ajuda você a se conectar com as pessoas de forma simples e direta,
+                        levando sua mensagem para as ruas com nossos telões de LED que chamam a atenção de todos que
+                        passam.</p>
                 </div>
 
                 <div className="md:w-1/2">
@@ -38,7 +41,7 @@ export default function Index() {
                     </div>
 
                     <div className="mt-6 border-t pt-4">
-                        <SignUpDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+                        <SignUpDialog isOpen={isOpen} setIsOpen={setIsOpen}/>
                     </div>
                 </div>
             </div>
