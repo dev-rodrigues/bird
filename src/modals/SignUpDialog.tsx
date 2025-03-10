@@ -69,7 +69,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
-                    Criar nova conta
+                    Create new account
                 </Button>
             </DialogTrigger>
             <DialogContent className="w-[80vw] max-w-4xl">
@@ -242,7 +242,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                             href="#"
                             className="text-blue-600 hover:underline"
                             onClick={(e) => {
-                                e.preventDefault(); // Evita a navegação padrão do link
+                                e.preventDefault();
                                 setIsOpen(false);
                             }}
                         >

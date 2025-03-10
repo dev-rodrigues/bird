@@ -30,7 +30,7 @@ export interface ConsultCampaignData {
 }
 
 export async function createCampaign(data: CampaignData): Promise<void> {
-    const response = await api.post<CampaignData>("/campaigns/4", data);
+    const response = await api.post<CampaignData>("/campaigns", data);
     console.log(response);
 }
 
@@ -38,7 +38,7 @@ export function useCampaigns(page: number, size: number) {
     return useQuery({
         queryKey: ['campaigns', page, size],
         queryFn: async () => {
-            const response = await api.get<ConsultCampaignData>(`/campaigns/4?page=${page}&size=${size}`);
+            const response = await api.get<ConsultCampaignData>(`/campaigns?page=${page}&size=${size}`);
             return response.data;
         }
     });

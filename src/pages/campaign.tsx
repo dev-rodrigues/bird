@@ -221,7 +221,8 @@ export default function Campaign() {
                     size={size}
                     currentPage={page}
                     isOpen={showModal}
-                    setIsOpen={setShowModal}/>
+                    setIsOpen={setShowModal}
+                />
 
                 <Input
                     className="max-w-lg"

@@ -44,7 +44,7 @@ export default function CampaignResumeStep({state}: StepComponentProps<keyof Ste
                     <ScrollArea className="max-h-40 overflow-y-auto rounded-md border">
                         {state.localization?.map((it, index) => (
                             <div key={index}>
-                                {`${it.name} (${it.lng} / ${it.lat})`}
+                                {`${it.name} (${it.longitude} / ${it.latitude})`}
                             </div>
                         ))}
                     </ScrollArea>
