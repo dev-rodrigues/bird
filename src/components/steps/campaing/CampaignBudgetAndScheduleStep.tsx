@@ -82,94 +82,82 @@ export default function CampaignBudgetAndScheduleStep({data, updateData}: StepCo
         }
     };
 
-    const handleTimeChange = (type: "start" | "end", newTime: string) => {
-        if (type === "start") {
-            setScheduleStart((prev) => ({...prev, time: newTime}));
-        } else {
-            setScheduleEnd((prev) => ({...prev, time: newTime}));
-        }
-    };
-
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
-            <div className={"flex flex-col col-span-2"}>
-                <InputContainer label={"Ad name"}>
+        <div className="h-full max-h-[400px] overflow-auto grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
+            {/* Ad Name - Sempre ocupa 2 colunas */}
+            <div className="flex flex-col col-span-2">
+                <InputContainer label="Ad name">
                     <Input value={adName} onChange={(e) => setAdName(e.target.value)}/>
                 </InputContainer>
             </div>
 
-            <div className={"flex flex-col gap-1"}>
-                <label className={"font-bold"}>Budget Type:</label>
-                <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
-                            className="w-full justify-between"
-                        >
-                            {budgetType
-                                ? budgets.find((framework) => framework.value === budgetType)?.label
-                                : "Select..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-300"/>
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                            <CommandInput placeholder="Search..."/>
-                            <CommandList>
-                                <CommandEmpty>No budget found.</CommandEmpty>
-                                <CommandGroup>
-                                    {budgets.map((framework) => (
-                                        <CommandItem
-                                            key={framework.value}
-                                            value={framework.value}
-                                            onSelect={() => handleBudgetChange(framework.value)}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    "mr-2 h-4 w-4",
-                                                    budgetType === framework.value ? "opacity-100" : "opacity-0"
-                                                )}
-                                            />
-                                            {framework.label}
-                                        </CommandItem>
-                                    ))}
-                                </CommandGroup>
-                            </CommandList>
-                        </Command>
-                    </PopoverContent>
-                </Popover>
-            </div>
-
-            <InputContainer label={"Budget Value"}>
-                <MoneyInput value={budgetValue} onChange={handleMoneyChange}/>
-            </InputContainer>
-
-            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
-                <div className="w-full lg:w-auto">
-                    <InputContainer label={"Start date"}>
-                        <DateTimeDisplay
-                            date={scheduleStart.date}
-                            time={scheduleStart.time}
-                            onDateChange={(newDate) => handleDateChange("start", newDate)}
-                            onTimeChange={(newTime) => handleTimeChange("start", newTime)}
-                        />
-                    </InputContainer>
+            {/* Budget Type e Budget Value lado a lado no wide */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+                <div className="flex flex-col gap-1">
+                    <label className="font-bold">Budget Type:</label>
+                    <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger asChild>
+                            <Button
+                                variant="outline"
+                                role="combobox"
+                                aria-expanded={open}
+                                className="w-full justify-between"
+                            >
+                                {budgetType
+                                    ? budgets.find((framework) => framework.value === budgetType)?.label
+                                    : "Select..."}
+                                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-300"/>
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[200px] p-0">
+                            <Command>
+                                <CommandInput placeholder="Search..."/>
+                                <CommandList>
+                                    <CommandEmpty>No budget found.</CommandEmpty>
+                                    <CommandGroup>
+                                        {budgets.map((framework) => (
+                                            <CommandItem
+                                                key={framework.value}
+                                                value={framework.value}
+                                                onSelect={() => handleBudgetChange(framework.value)}
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "mr-2 h-4 w-4",
+                                                        budgetType === framework.value ? "opacity-100" : "opacity-0"
+                                                    )}
+                                                />
+                                                {framework.label}
+                                            </CommandItem>
+                                        ))}
+                                    </CommandGroup>
+                                </CommandList>
+                            </Command>
+                        </PopoverContent>
+                    </Popover>
                 </div>
 
-                <div className="w-full lg:w-auto">
-                    <InputContainer label={"End date"}>
-                        <DateTimeDisplay
-                            date={scheduleEnd.date}
-                            time={scheduleEnd.time}
-                            onDateChange={(newDate) => handleDateChange("end", newDate)}
-                            onTimeChange={(newTime) => handleTimeChange("end", newTime)}
-                        />
-                    </InputContainer>
-                </div>
+                <InputContainer label="Budget Value">
+                    <MoneyInput value={budgetValue} onChange={handleMoneyChange}/>
+                </InputContainer>
             </div>
 
+            {/* Start Date e End Date lado a lado no wide */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+                <InputContainer label="Start date">
+                    <DateTimeDisplay
+                        date={scheduleStart.date}
+                        onDateChange={(newDate) => handleDateChange("start", newDate)}
+                    />
+                </InputContainer>
+
+                <InputContainer label="End date">
+                    <DateTimeDisplay
+                        date={scheduleEnd.date}
+                        onDateChange={(newDate) => handleDateChange("end", newDate)}
+                    />
+                </InputContainer>
+            </div>
         </div>
     );
 }

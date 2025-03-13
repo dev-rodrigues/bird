@@ -4,6 +4,7 @@ import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
 import {StepComponentProps} from "@/modals/CreateCampaignDialogTypes.ts";
 import * as React from "react";
+import {toast} from "sonner"; // Importando o Sonner
 
 export default function CampaignMediasStep({data, updateData}: StepComponentProps<"medias">) {
     const [selectedFile, setSelectedFile] = useState<File | null>(data ?? null);
@@ -40,10 +41,31 @@ export default function CampaignMediasStep({data, updateData}: StepComponentProp
     const handleVideoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setSelectedFile(file);
-            event.target.value = "";
+            const allowedTypes = ["video/mp4", "video/quicktime"]; // MP4 e MOV
+            if (!allowedTypes.includes(file.type)) {
+                toast.error("O formato de vídeo não é suportado. Envie um arquivo MP4 ou MOV.");
+                return;
+            }
+
+            const video = document.createElement("video");
+            video.preload = "metadata";
+            video.src = URL.createObjectURL(file);
+
+            video.onloadedmetadata = () => {
+                URL.revokeObjectURL(video.src);
+                if (video.duration > 15) {
+                    toast.error("O vídeo selecionado excede o limite de 15 segundos.");
+                    setSelectedFile(null);
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                    }
+                } else {
+                    setSelectedFile(file);
+                }
+            };
         }
     };
+
 
     const handleRemoveVideo = () => {
         setSelectedFile(null);
@@ -79,10 +101,16 @@ export default function CampaignMediasStep({data, updateData}: StepComponentProp
 
                 <div className="w-full">
                     {videoPreview ? (
-                        <video controls className="w-full max-h-[200px] rounded-lg border border-neutral-600">
+                        <video
+                            className="w-full max-h-[200px] rounded-lg border border-neutral-600"
+                            controls
+                            muted
+                            controlsList="nodownload nofullscreen noremoteplayback"
+                            disablePictureInPicture
+                        >
                             <source
                                 src={videoPreview}
-                                type={selectedFile?.type ?? "video/mp4"}
+                                type={selectedFile?.type === "video/quicktime" ? "video/mp4" : selectedFile?.type}
                             />
                             Your browser does not support video playback.
                         </video>

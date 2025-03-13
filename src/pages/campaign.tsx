@@ -28,6 +28,7 @@ import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {CreateCampaignDialog} from "@/modals/CreateCampaignDialog.tsx";
 import {useCampaigns} from "@/services/campaignService.ts";
 import {format} from "date-fns";
+import {useNavigate} from "react-router";
 
 export interface CampaignProps {
     id: string;
@@ -39,138 +40,9 @@ export interface CampaignProps {
     created_at: string;
 }
 
-export const columns: ColumnDef<CampaignProps>[] = [
-    {
-        id: "select",
-        header: ({table}) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({row}) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({row}) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
-    },
-    {
-        accessorKey: "goal",
-        header: "Goal",
-        cell: ({row}) => (
-            <div className="capitalize">{row.getValue("goal")}</div>
-        ),
-    },
-    {
-        accessorKey: "name",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Name
-                    <ArrowUpDown/>
-                </Button>
-            );
-        },
-        cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
-    },
-    {
-        accessorKey: "from",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    From
-                    <ArrowUpDown/>
-                </Button>
-            );
-        },
-        cell: ({row}) => <div className="lowercase">{row.getValue("from")}</div>,
-    },
-    {
-        accessorKey: "to",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    To
-                    <ArrowUpDown/>
-                </Button>
-            );
-        },
-        cell: ({row}) => <div className="lowercase">{row.getValue("to")}</div>,
-    },
-    {
-        accessorKey: "created_at",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Created At
-                    <ArrowUpDown/>
-                </Button>
-            );
-        },
-        cell: ({row}) => {
-            const date = new Date(row.getValue("created_at"));
-            return <div>{format(date, "dd/MM/yyyy HH:mm:ss")}</div>; // Formata a data
-        },
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({row}) => {
-            const campaign = row.original;
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => {
-                                void navigator.clipboard.writeText(campaign.id);
-                            }}
-                        >
-                            Copy campaign ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator/>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
-    },
-];
-
 export default function Campaign() {
+    const navigate = useNavigate();
+
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -178,12 +50,143 @@ export default function Campaign() {
     const [showModal, setShowModal] = useState(false);
     const [page, setPage] = useState(0);
     const size = 50;
+
     const {data, isFetching, refetch} = useCampaigns(page, size);
     const result = data?.content ?? [];
 
     useEffect(() => {
         void refetch();
     }, [page, refetch]);
+
+    const columns: ColumnDef<CampaignProps>[] = [
+        {
+            id: "select",
+            header: ({table}) => (
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                    }
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({row}) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
+        {
+            accessorKey: "status",
+            header: "Status",
+            cell: ({row}) => (
+                <div className="capitalize">{row.getValue("status")}</div>
+            ),
+        },
+        {
+            accessorKey: "goal",
+            header: "Goal",
+            cell: ({row}) => (
+                <div className="capitalize">{row.getValue("goal")}</div>
+            ),
+        },
+        {
+            accessorKey: "name",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Name
+                        <ArrowUpDown/>
+                    </Button>
+                );
+            },
+            cell: ({row}) => <div className="lowercase">{row.getValue("name")}</div>,
+        },
+        {
+            accessorKey: "from",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        From
+                        <ArrowUpDown/>
+                    </Button>
+                );
+            },
+            cell: ({row}) => <div className="lowercase">{row.getValue("from")}</div>,
+        },
+        {
+            accessorKey: "to",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        To
+                        <ArrowUpDown/>
+                    </Button>
+                );
+            },
+            cell: ({row}) => <div className="lowercase">{row.getValue("to")}</div>,
+        },
+        {
+            accessorKey: "created_at",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Created At
+                        <ArrowUpDown/>
+                    </Button>
+                );
+            },
+            cell: ({row}) => {
+                const date = new Date(row.getValue("created_at"));
+                return <div>{format(date, "dd/MM/yyyy HH:mm:ss")}</div>; // Formata a data
+            },
+        },
+        {
+            id: "actions",
+            enableHiding: false,
+            cell: ({row}) => {
+                const campaign = row.original;
+
+                return (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal/>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                                onClick={() => navigate(`/campaign/${campaign.id}`)}
+                            >
+                                Details
+                            </DropdownMenuItem>
+
+                            <DropdownMenuSeparator/>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                );
+            },
+        },
+    ];
 
     const table = useReactTable({
         data: result,

@@ -6,6 +6,7 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import {StepComponentProps} from "@/modals/CreateCampaignDialogTypes.ts";
 import {useCampaigns} from "@/services/totemService.ts";
+import {useEffect, useState} from "react";
 
 export interface LocalizationProps {
     latitude: number;
@@ -33,30 +34,11 @@ const SelectedIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const calculateCenter = (locations: LocalizationProps[]) => {
-    const total = locations.reduce(
-        (acc, location) => {
-            return {
-                lat: acc.lat + location.latitude,
-                lng: acc.lng + location.longitude,
-            };
-        },
-        {lat: 0, lng: 0}
-    );
-
-    return {
-        lat: total.lat / locations.length,
-        lng: total.lng / locations.length,
-    };
-};
-
-
 export default function CampaignLocalizationStep({data, updateData}: StepComponentProps<"localization">) {
+    const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
 
     const {data: totems} = useCampaigns()
     const locations = totems ?? [];
-
-    const center = calculateCenter(locations);
 
     const selectedLocations = data ?? [];
 
@@ -68,39 +50,59 @@ export default function CampaignLocalizationStep({data, updateData}: StepCompone
         }
     };
 
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setUserPosition([position.coords.latitude, position.coords.longitude]);
+                },
+                (error) => {
+                    console.error("Erro ao obter localização:", error);
+                }
+            );
+        } else {
+            console.error("Geolocalização não é suportada pelo navegador.");
+        }
+    }, []);
+
     return (
         <div>
-            <MapContainer center={center} zoom={15} style={{height: '250px', width: '100%'}}>
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                {locations.map((location, index) => {
-                    const isSelected = selectedLocations.some(
-                        (selected) => selected.name === location.name
-                    );
+            {userPosition ? (
 
-                    return (
-                        <Marker
-                            key={index}
-                            position={[location.latitude, location.longitude]}
-                            icon={isSelected ? SelectedIcon : DefaultIcon}
-                        >
-                            <Popup>
-                                <div>
-                                    <p>{location.name}</p>
-                                    <Switch
-                                        checked={isSelected}
-                                        onCheckedChange={(isChecked) =>
-                                            handleToggleLocation(location, isChecked)
-                                        }
-                                    />
-                                </div>
-                            </Popup>
-                        </Marker>
-                    );
-                })}
-            </MapContainer>
+                <MapContainer center={userPosition} zoom={15} style={{height: '250px', width: '100%'}}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {locations.map((location, index) => {
+                        const isSelected = selectedLocations.some(
+                            (selected) => selected.name === location.name
+                        );
+
+                        return (
+                            <Marker
+                                key={index}
+                                position={[location.latitude, location.longitude]}
+                                icon={isSelected ? SelectedIcon : DefaultIcon}
+                            >
+                                <Popup>
+                                    <div>
+                                        <p>{location.name}</p>
+                                        <Switch
+                                            checked={isSelected}
+                                            onCheckedChange={(isChecked) =>
+                                                handleToggleLocation(location, isChecked)
+                                            }
+                                        />
+                                    </div>
+                                </Popup>
+                            </Marker>
+                        );
+                    })}
+                </MapContainer>
+            ): (
+                <p>Obtendo localização...</p>
+            )}
 
             <div style={{marginTop: '20px'}}>
                 <h3>Selected Locations:</h3>

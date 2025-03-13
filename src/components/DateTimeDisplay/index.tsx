@@ -1,20 +1,22 @@
 import {Card} from "@/components/ui/card";
-import {CalendarIcon, ClockIcon} from "lucide-react";
+import {CalendarIcon} from "lucide-react";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Calendar} from "@/components/ui/calendar";
-import {Input} from "@/components/ui/input";
+import {cn} from "@/lib/utils"
+
 
 interface DateTimeDisplayProps {
     date: Date | undefined;
-    time: string;
     onDateChange: (date: Date | undefined) => void;
-    onTimeChange: (time: string) => void;
 }
 
-export default function DateTimeDisplay({date, time, onDateChange, onTimeChange}: DateTimeDisplayProps) {
-
+export default function DateTimeDisplay({date, onDateChange}: DateTimeDisplayProps) {
     return (
-        <Card className="flex items-center justify-between p-1 w-full max-w-md border border-gray-300">
+        <Card
+            className={cn(
+                "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+            )}
+        >
             <Popover>
                 <PopoverTrigger className="flex items-center gap-2 text-gray-700">
                     <CalendarIcon size={16}/>
@@ -28,15 +30,6 @@ export default function DateTimeDisplay({date, time, onDateChange, onTimeChange}
                     />
                 </PopoverContent>
             </Popover>
-            <div className="flex items-center gap-2 text-gray-700">
-                <ClockIcon size={16}/>
-                <Input
-                    type="time"
-                    value={time}
-                    onChange={(e) => onTimeChange(e.target.value)}
-                    className="w-20"
-                />
-            </div>
         </Card>
     );
 }

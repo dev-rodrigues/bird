@@ -104,7 +104,20 @@ export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: Cre
             medias: stepData.medias ? stepData.medias.name : "Nenhum arquivo selecionado",
         });
 
-        mutate(mapStepDataToCampaignData(stepData));
+        const payload = mapStepDataToCampaignData(stepData);
+
+        const formData = new FormData();
+
+        // Converte o payload para JSON e adiciona ao FormData como Blob
+        const jsonBlob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+        formData.append("campaignDto", jsonBlob);
+
+        // Adiciona o arquivo ao FormData (se existir)
+        if (stepData.medias) {
+            formData.append("file", stepData.medias);
+        }
+
+        mutate(formData);
     };
 
     const CurrentStepComponent = steps[step].component;

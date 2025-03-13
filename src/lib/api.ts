@@ -19,6 +19,7 @@ api.interceptors.request.use(
         }
         return config;
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (_) => {
         return Promise.reject(new Error("Erro desconhecido na requisição"));
     }

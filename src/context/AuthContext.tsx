@@ -58,11 +58,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const login = useCallback(async ({user, password}: SignInProps) => {
         try {
             const response = await auth({user, password});
-            const decodedObject = getDecodedData(response.token) as JwtDataProps;
+            const decodedObject = getDecodedData(response.token);
 
             setData({
                 role: decodedObject.role,
-                id: decodedObject.id, // Certifique-se de que o token decodificado contém o ID
+                id: decodedObject.id,
             });
 
             localStorage.setItem("@bc.token", response.token);

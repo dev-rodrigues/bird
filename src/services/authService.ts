@@ -8,7 +8,11 @@ interface AuthResponse {
 
 export async function auth({user, password}: SignInProps): Promise<AuthResponse> {
     delete api.defaults.headers.common.Authorization;
-    const response = await api.post<AuthResponse>("/sessions", {login: user, password: password});
+    const response = await api.post<AuthResponse>(
+            "/sessions",
+            {login: user, password: password},
+        )
+    ;
     return response.data;
 }
 
@@ -22,4 +26,12 @@ export async function checkToken(): Promise<boolean> {
         }
         throw error;
     }
+}
+
+export function isAdmin(role?: string[]): boolean {
+    if (!role) {
+        return false
+    }
+
+    return role.some((role) => role === "ADMIN");
 }

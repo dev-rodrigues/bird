@@ -66,6 +66,7 @@ export function CampaignObjectiveStep({
             </ToggleGroup>
 
             <motion.div
+                className={"hidden md:block"}
                 key={selected}
                 initial={{opacity: 0, y: 10}}
                 animate={{opacity: 1, y: 0}}
