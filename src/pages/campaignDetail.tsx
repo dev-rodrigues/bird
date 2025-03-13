@@ -7,6 +7,20 @@ import {useCampaign, useCampaignMedia} from "@/services/campaignService.ts";
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {useAuth} from "@/context/AuthContext.tsx";
 import {isAdmin} from "@/services/authService.ts";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 export function CampaignDetail() {
 
@@ -149,11 +163,28 @@ export function CampaignDetail() {
                         </div>
 
                         <div className="space-y-1">
-                            <Label htmlFor="name">Ad name</Label>
-                            <Input
-                                value={data?.adName}
-                                id="name" disabled defaultValue="Pedro Duarte"
-                            />
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="secondary">Configure</Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56">
+                                    <DropdownMenuLabel>Settings for ad veiculation</DropdownMenuLabel>
+                                    <DropdownMenuSeparator/>
+                                    <DropdownMenuSeparator/>
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuSub>
+                                            <DropdownMenuSubTrigger>Status</DropdownMenuSubTrigger>
+                                            <DropdownMenuPortal>
+                                                <DropdownMenuSubContent>
+                                                    <DropdownMenuItem>APPROVED</DropdownMenuItem>
+                                                    <DropdownMenuItem>INACTIVE</DropdownMenuItem>
+                                                    <DropdownMenuItem>DENIED</DropdownMenuItem>
+                                                </DropdownMenuSubContent>
+                                            </DropdownMenuPortal>
+                                        </DropdownMenuSub>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </CardContent>
                 </Card>

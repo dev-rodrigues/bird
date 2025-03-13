@@ -57,6 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     const login = useCallback(async ({user, password}: SignInProps) => {
         try {
+            logout();
             const response = await auth({user, password});
             const decodedObject = getDecodedData(response.token);
 
