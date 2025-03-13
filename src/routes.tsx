@@ -8,6 +8,7 @@ import Financial from "@/pages/financial.tsx";
 import Map from "./pages/map.tsx";
 import NotFound from "./pages/notFound.tsx";
 import {CampaignDetail} from "@/pages/campaignDetail.tsx";
+import Users from "./pages/users.tsx";
 
 export default function AppRoutes() {
   return(
@@ -19,6 +20,7 @@ export default function AppRoutes() {
           <Route index path={"campaign/:id"} element={<CampaignDetail />}/>
           <Route index path={"financial"} element={<Financial />}/>
           <Route index path={"map"} element={<Map />}/>
+          <Route index path={"user"} element={<Users />}/>
           <Route path="*" element={<NotFound />}/>
       </Route>
       <Route path="about" element={<AboutPage />} />
