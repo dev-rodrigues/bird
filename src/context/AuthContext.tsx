@@ -33,6 +33,7 @@ export interface JWTProps {
 export interface JwtDataProps {
     role: string[];
     id: number;
+    companyId: number;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
@@ -44,7 +45,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                 const decodedToken = getDecodedData(savedToken);
                 return {
                     role: decodedToken.role,
-                    id: decodedToken.id, // Certifique-se de que o token decodificado contém o ID
+                    id: decodedToken.id,
+                    companyId: decodedToken.companyId,
                 };
             } catch (error) {
                 console.error("Erro ao decodificar o token:", error);
@@ -64,6 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             setData({
                 role: decodedObject.role,
                 id: decodedObject.id,
+                companyId: decodedObject.companyId,
             });
 
             localStorage.setItem("@bc.token", response.token);

@@ -39,6 +39,13 @@ export async function createCampaign(data: FormData): Promise<void> {
     });
 }
 
+export function configureStatus(id: number, status: string, reason?: string) {
+    return api.put(`/campaigns/${id}`, {
+        status: status,
+        reason: reason
+    })
+}
+
 export function useCampaigns(page: number, size: number) {
     return useQuery({
         queryKey: ['campaigns', page, size],

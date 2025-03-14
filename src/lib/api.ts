@@ -14,7 +14,7 @@ api.interceptors.request.use(
         if (token) {
             const decoded = getDecodedData(token)
 
-            config.headers.companyId = decoded.id
+            config.headers.companyId = decoded.companyId
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
