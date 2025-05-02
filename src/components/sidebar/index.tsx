@@ -17,7 +17,7 @@ export function Sidebar() {
                               }
                         >
                             <Origami className={"h-5 w-5 transition-all"}/>
-                            <span className={"sr-only"}>Logo do projeto Bird</span>
+                            <span className={"sr-only"}>Bird Project Logo</span>
                         </Link>
 
                         <Tooltip>
@@ -28,11 +28,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <Home className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Inicio</span>
+                                    <span className={"sr-only"}>Home</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Inicio
+                                Home
                             </TooltipContent>
                         </Tooltip>
 
@@ -44,11 +44,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <Presentation className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Inicio</span>
+                                    <span className={"sr-only"}>Campaign</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Campanha
+                                Campaign
                             </TooltipContent>
                         </Tooltip>
 
@@ -60,11 +60,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <HandCoins className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Financeiro</span>
+                                    <span className={"sr-only"}>Financial</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Financeiro
+                                Financial
                             </TooltipContent>
                         </Tooltip>
 
@@ -76,11 +76,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <MapPinned className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Mapa</span>
+                                    <span className={"sr-only"}>Map</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Mapa
+                                Map
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
@@ -96,11 +96,11 @@ export function Sidebar() {
                                       }
                                 >
                                     <LogOut className={"h-5 w-5"}/>
-                                    <span className={"sr-only"}>Sair</span>
+                                    <span className={"sr-only"}>Log Out</span>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side={"right"}>
-                                Sair
+                                Log Out
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
@@ -115,7 +115,7 @@ export function Sidebar() {
                         <SheetTrigger asChild>
                             <Button size={"icon"} variant={"outline"} className={"sm:hidden"}>
                                 <PanelBottom className={"w-5 h-5"}/>
-                                <span className={"sr-only"}>Abrir / Fechar menu</span>
+                                <span className={"sr-only"}>Open / Close menu</span>
                             </Button>
                         </SheetTrigger>
 
@@ -126,7 +126,7 @@ export function Sidebar() {
                                           "flex h-10 w-10 bg-primary rounded-full text-lg items-center justify-center text-primary-foreground md:text-base gap-2"}
                                 >
                                     <Origami className={"h-5 w-5 transition-all"}/>
-                                    <span className={"sr-only"}>Logo do projeto Bird</span>
+                                    <span className={"sr-only"}>Bird Project Logo</span>
                                 </Link>
 
                                 <Link to={"/dashboard"}
@@ -134,7 +134,7 @@ export function Sidebar() {
                                           "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
                                 >
                                     <Home className={"h-5 w-5 transition-all"}/>
-                                    Inicio
+                                    Home
                                 </Link>
 
                                 <Link to={"/campaign"}
@@ -142,7 +142,7 @@ export function Sidebar() {
                                           "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
                                 >
                                     <Presentation className={"h-5 w-5 transition-all"}/>
-                                    Campanha
+                                    Campaign
                                 </Link>
 
                                 <Link to={"/financial"}
@@ -150,9 +150,16 @@ export function Sidebar() {
                                           "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
                                 >
                                     <HandCoins className={"h-5 w-5 transition-all"}/>
-                                    Financeiro
+                                    Financial
                                 </Link>
 
+                                <Link to={"/map"}
+                                      className={
+                                          "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"}
+                                >
+                                    <MapPinned className={"h-5 w-5 transition-all"}/>
+                                    Map
+                                </Link>
 
                             </nav>
                         </SheetContent>
