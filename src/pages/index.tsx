@@ -41,7 +41,8 @@ export default function Index() {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
             <div
-                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8">
+                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8"
+            >
                 <div className="md:w-1/2 mb-6 md:mb-0">
                     <h1 className="text-5xl text-center font-bold mb-4">Bird</h1>
                     <p className="text-lg text-center">

@@ -31,3 +31,4 @@ stats*.html
 yarn.lock
 
 package-lock.json
+dist

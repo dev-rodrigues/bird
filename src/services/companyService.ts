@@ -8,7 +8,6 @@ export interface CompanyData {
     phone: string;
     password: string;
     confirmPassword: string;
-    fodase: string
 }
 
 export async function createCompany(data: CompanyData): Promise<CompanyData> {

@@ -75,7 +75,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
             <DialogContent className="w-[80vw] max-w-4xl">
                 <DialogHeader>
                     <DialogTitle>Create a new account</DialogTitle>
-                    <p className="text-sm text-gray-600">It's quick and easy.</p>
+                    <p className="text-sm text-gray-600">It&apos;s quick and easy.</p>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
