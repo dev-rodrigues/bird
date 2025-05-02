@@ -31,6 +31,10 @@ export interface ConsultCampaignData {
     size: number,
 }
 
+export interface FileResource {
+    url: string
+}
+
 export async function createCampaign(data: FormData): Promise<void> {
     await api.post<CampaignData>("/campaigns", data, {
         headers: {
@@ -73,9 +77,7 @@ export function useCampaignMedia(id?: number | null) {
             if (!id) {
                 return null;
             }
-            const response = await api.get<Blob>(`/media/${id}`, {
-                responseType: 'blob'
-            });
+            const response = await api.get<FileResource>(`/media/${id}`);
             return response.data;
         },
         enabled: !!id,

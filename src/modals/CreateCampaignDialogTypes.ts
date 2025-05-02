@@ -21,6 +21,7 @@ export interface Step<K extends keyof StepData> {
     label: string;
     component: (props: StepComponentProps<K>) => ReactNode;
     key: K;
+    isValid: (key: K, data: StepData[K]) => boolean;
 }
 
 export interface StepComponentProps<K extends keyof StepData> {

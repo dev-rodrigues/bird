@@ -21,8 +21,15 @@ import {useMutation} from "@tanstack/react-query";
 import {createCampaign, mapStepDataToCampaignData} from "@/services/campaignService.ts";
 import {queryClient} from "@/main.tsx";
 import {toast} from "sonner";
+import {
+    isBudgetValid,
+    isLocalizationValid,
+    isMediasValid,
+    isObjectiveValid,
+    isResumeValid
+} from "@/modals/validation/helpers.ts";
 
-interface CreateCampaignDialogProps extends  Props{
+interface CreateCampaignDialogProps extends Props {
     currentPage: number;
     size: number;
 }
@@ -36,26 +43,31 @@ export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: Cre
             label: "Choose the campaign objective",
             component: CampaignObjectiveStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
             key: "objective",
+            isValid: isValid
         },
         {
             label: "Budget and Schedule",
             component: CampaignBudgetAndScheduleStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
             key: "budget",
+            isValid: isValid
         },
         {
             label: "Medias",
             component: CampaignMediasStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
             key: "medias",
+            isValid: isValid
         },
         {
             label: "Localization",
             component: CampaignLocalizationStep as unknown as (props: StepComponentProps<keyof StepData>) => ReactNode,
             key: "localization",
+            isValid: isValid
         },
         {
             label: "Resume",
             component: CampaignResumeStep,
             key: "resume",
+            isValid: isValid
         },
     ];
 
@@ -109,7 +121,7 @@ export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: Cre
         const formData = new FormData();
 
         // Converte o payload para JSON e adiciona ao FormData como Blob
-        const jsonBlob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+        const jsonBlob = new Blob([JSON.stringify(payload)], {type: "application/json"});
         formData.append("campaignDto", jsonBlob);
 
         // Adiciona o arquivo ao FormData (se existir)
@@ -119,6 +131,35 @@ export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: Cre
 
         mutate(formData);
     };
+
+    function isValid<K extends keyof StepData>(key: K, data: StepData[K]): boolean {
+        switch (key) {
+            case "objective":
+                console.log("Validating objective");
+                return isObjectiveValid(data as StepData["objective"]);
+
+            case "budget":
+                console.log("Validating budget");
+                return isBudgetValid(data as StepData["budget"]);
+
+            case "medias":
+                console.log("Validating medias");
+                return isMediasValid(data as StepData["medias"]);
+
+            case "localization":
+                console.log("Validating localization");
+                return isLocalizationValid(data as StepData["localization"]);
+
+            case "resume":
+                console.log("Validating resume");
+                return isResumeValid(data as StepData["resume"]);
+
+            default:
+                console.warn("Unknown step key:", key);
+                return false;
+        }
+    }
+
 
     const CurrentStepComponent = steps[step].component;
 
@@ -162,7 +203,12 @@ export function CreateCampaignDialog({isOpen, setIsOpen, size, currentPage}: Cre
                             {isLastStep ? (
                                 <Button onClick={submitData}>Save</Button>
                             ) : (
-                                <Button onClick={nextStep}>Next</Button>
+                                <Button
+                                    onClick={nextStep}
+                                    disabled={!isValid(steps[step].key, stepData[steps[step].key])}
+                                >
+                                    Next
+                                </Button>
                             )}
                         </div>
                     </CardContent>

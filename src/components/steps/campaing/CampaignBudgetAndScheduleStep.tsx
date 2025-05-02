@@ -1,7 +1,7 @@
 import {useEffect, useState, useCallback} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@radix-ui/react-popover";
 import {Button} from "@/components/ui/button.tsx";
-import {Check, ChevronsUpDown} from "lucide-react";
+import {Check, ChevronsUpDown, Info} from "lucide-react";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList} from "@/components/ui/command.tsx";
 import {cn} from "@/lib/utils.ts";
 import InputContainer from "@/components/InputContainer";
@@ -10,6 +10,8 @@ import MoneyInput from "@/components/MoneyInput";
 import {StepComponentProps} from "@/modals/CreateCampaignDialogTypes.ts";
 import {getCurrentTime} from "@/modals/utlis/formater.ts";
 import {Input} from "@/components/ui/input.tsx";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx";
+import {useBankBalance} from "@/services/bank-balance.ts";
 
 const budgets = [
     {
@@ -27,12 +29,14 @@ interface Schedule {
     time: string;
 }
 
-export default function CampaignBudgetAndScheduleStep({data, updateData}: StepComponentProps<"budget">) {
+export default function CampaignBudgetAndScheduleStep({data: result, updateData}: StepComponentProps<"budget">) {
     const [open, setOpen] = useState(false);
 
-    const [budgetType, setBudgetType] = useState<string>(data?.type ?? "");
-    const [budgetValue, setBudgetValue] = useState<number>(data?.amount ?? 0.00);
-    const [adName, setAdName] = useState<string>(data?.name ?? "");
+    const [budgetType, setBudgetType] = useState<string>(result?.type ?? "");
+    const [budgetValue, setBudgetValue] = useState<number>(result?.amount ?? 0.00);
+    const [adName, setAdName] = useState<string>(result?.name ?? "");
+
+    const {data: balance} = useBankBalance()
 
     const [scheduleStart, setScheduleStart] = useState<Schedule>({
         date: new Date(),
@@ -63,7 +67,7 @@ export default function CampaignBudgetAndScheduleStep({data, updateData}: StepCo
             schedule_start: newScheduleStart,
             schedule_end: newScheduleEnd,
         });
-    }, [adName, budgetType, budgetValue, scheduleStart, scheduleEnd, combineDateAndTime]);
+    }, [adName, budgetType, budgetValue, scheduleStart, scheduleEnd, combineDateAndTime, updateData]);
 
     const handleBudgetChange = (value: string) => {
         setBudgetType(value);
@@ -138,7 +142,25 @@ export default function CampaignBudgetAndScheduleStep({data, updateData}: StepCo
                 </div>
 
                 <InputContainer label="Budget Value">
-                    <MoneyInput value={budgetValue} onChange={handleMoneyChange}/>
+                    <div className={"flex flex-row items-center gap-2"}>
+
+                        <MoneyInput value={budgetValue} onChange={handleMoneyChange}/>
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Info/>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>{`Current balance ${new Intl.NumberFormat('pt-BR', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    }).format(balance?.balance ?? 0)}`}
+                                    </p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+
                 </InputContainer>
             </div>
 

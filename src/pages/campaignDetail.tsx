@@ -56,9 +56,9 @@ export function CampaignDetail() {
 
     useEffect(() => {
         if (media) {
-            const url = URL.createObjectURL(media);
-            setVideoUrl(url);
-            return () => URL.revokeObjectURL(url);
+            // const url = URL.createObjectURL(media);
+            setVideoUrl(media.url);
+            return () => URL.revokeObjectURL(media.url);
         }
     }, [media]);
 

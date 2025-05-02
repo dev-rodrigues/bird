@@ -4,6 +4,16 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {CreateTotemDialog} from "@/modals/CreateTotemDialog.tsx";
 import {useCampaigns} from "@/services/totemService.ts";
+import {Separator} from "@/components/ui/separator.tsx";
+import {
+    DropdownMenu,
+    DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
+    DropdownMenuLabel, DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {Settings} from "lucide-react";
+import {useMutation} from "@tanstack/react-query";
+import {createCampaign} from "@/services/sseService.ts";
 
 export interface Totem {
     id: number;
@@ -39,6 +49,17 @@ export default function Map() {
         }
     }, []);
 
+    const {mutate} = useMutation({
+        mutationFn: ({clientId, data}: { clientId: string; data: string }) =>
+            createCampaign(clientId, data),
+    });
+
+    const submitUpdate = (clientId: string, data: string) => {
+        mutate({
+            clientId: clientId,
+            data: data,
+        });
+    };
     return (
         <div className="flex flex-col gap-4 p-4 relative z-0 w-full">
             <CreateTotemDialog/>
@@ -51,6 +72,27 @@ export default function Map() {
                             <Marker key={index} position={[totem.latitude, totem.longitude]} icon={customIcon}>
                                 <Popup>
                                     <strong>{totem.name}</strong>
+                                    <Separator className={"mt-1 mb-1"}/>
+
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button className={"w-20 h-5"} variant="secondary">Open</Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-56">
+                                            <DropdownMenuLabel>Configurations</DropdownMenuLabel>
+
+                                            <DropdownMenuGroup>
+                                                <DropdownMenuItem
+                                                    onClick={() => submitUpdate(
+                                                        totem.id.toString(), "UPDATE_TIMELINE"
+                                                    )}
+                                                >
+                                                    <Settings/>
+                                                    <span>Force update</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuGroup>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </Popup>
                             </Marker>
                         ))}

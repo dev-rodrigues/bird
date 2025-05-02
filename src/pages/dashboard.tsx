@@ -1,5 +1,5 @@
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Activity, MonitorCheck} from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card.tsx";
+import { Activity, MonitorCheck } from "lucide-react";
 
 export default function Dashboard() {
     return (
@@ -9,12 +9,12 @@ export default function Dashboard() {
                     <CardHeader>
                         <div className={"flex items-center justify-center"}>
                             <CardTitle className={"text-lg sm:text-xl text-gray-800 select-none"}>
-                                Campanhas Ativas
+                                Active Campaigns
                             </CardTitle>
                             <MonitorCheck className={"ml-auto w-4 h-4"} />
                         </div>
                         <CardDescription>
-                            Campanhas em reprodução
+                            Campaigns in playback
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -26,7 +26,7 @@ export default function Dashboard() {
                     <CardHeader>
                         <div className={"flex items-center justify-center"}>
                             <CardTitle className={"text-lg sm:text-xl text-gray-800 select-none"}>
-                                Alcance
+                                Reach
                             </CardTitle>
                             <Activity className={"ml-auto w-4 h-4"} />
                         </div>
@@ -40,5 +40,5 @@ export default function Dashboard() {
                 </Card>
             </section>
         </>
-    )
+    );
 }

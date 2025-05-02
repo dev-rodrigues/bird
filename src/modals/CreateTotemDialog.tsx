@@ -10,9 +10,9 @@ import {toast} from "sonner";
 import {queryClient} from "@/main.tsx";
 
 const schema = z.object({
-    name: z.string().min(1, "Nome é obrigatório"),
-    latitude: z.string().refine(val => !isNaN(parseFloat(val)), "Latitude deve ser um número"),
-    longitude: z.string().refine(val => !isNaN(parseFloat(val)), "Longitude deve ser um número"),
+    name: z.string().min(1, "Name is required"),
+    latitude: z.string().refine(val => !isNaN(parseFloat(val)), "Latitude must be a number"),
+    longitude: z.string().refine(val => !isNaN(parseFloat(val)), "Longitude must be a number"),
 });
 
 export function CreateTotemDialog() {
@@ -28,15 +28,15 @@ export function CreateTotemDialog() {
                     queryKey: ['totem'],
                 })
                 .catch(() => {
-                    toast.error("Error to invalidate campaign query");
+                    toast.error("Error invalidating campaign query");
                 })
                 .finally(() => {
                     toast.success("Totem created successfully");
-                    reset()
-                })
+                    reset();
+                });
         },
         onError: () => {
-            toast.error("Erro ao criar o totem. Tente novamente.");
+            toast.error("Failed to create totem. Please try again.");
         }
     });
 
@@ -49,17 +49,17 @@ export function CreateTotemDialog() {
             <Dialog>
                 <DialogTrigger asChild>
                     <Button className="bg-green-500 hover:bg-green-600 text-white">
-                        Criar um novo ponto de visualização
+                        Create a new viewing point
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="z-50 max-w-4xl w-full p-8">
                     <DialogHeader>
-                        <DialogTitle>Criar um novo ponto de visualização</DialogTitle>
+                        <DialogTitle>Create a new viewing point</DialogTitle>
                     </DialogHeader>
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-bold text-gray-700">Nome:</label>
-                            <Input {...register("name")} placeholder="Nome" className="w-full"/>
+                            <label className="block text-sm font-bold text-gray-700">Name:</label>
+                            <Input {...register("name")} placeholder="Name" className="w-full"/>
                             {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
                         </div>
                         <div className="flex gap-2">
