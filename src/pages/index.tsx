@@ -8,8 +8,8 @@ import {toast} from "sonner";
 import {Navigate} from "react-router";
 
 const loginSchema = z.object({
-    email: z.string().min(1, "O email é obrigatório").email("Email inválido"),
-    password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+    email: z.string().min(1, "Email is required").email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
@@ -41,16 +41,15 @@ export default function Index() {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
             <div
-                className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8"
-            >
-                <div className="md:w-1/2 mb-6 md:mb-0">
-                    <h1 className="text-5xl text-center font-bold mb-4">Bird</h1>
-                    <p className="text-lg text-center">
+                className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row md:items-start md:space-x-8">
+                <div className="w-full md:w-1/2 mb-6 md:mb-0 text-center md:text-left">
+                    <h1 className="text-4xl sm:text-5xl font-bold mb-4">Bird</h1>
+                    <p className="text-base sm:text-lg">
                         Bird helps you connect with people in a simple and direct way.
                     </p>
                 </div>
 
-                <div className="md:w-1/2">
+                <div className="w-full md:w-1/2">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <input
                             type="text"

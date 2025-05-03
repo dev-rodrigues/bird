@@ -65,14 +65,18 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
     const onSubmit = (form: FormData) => {
         mutate(form)
     }
+
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={setIsOpen} modal>
             <DialogTrigger asChild>
                 <Button className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
                     Create new account
                 </Button>
             </DialogTrigger>
-            <DialogContent className="w-[80vw] max-w-4xl">
+            <DialogContent
+                className="w-[90vw] sm:max-w-2xl max-h-screen overflow-y-auto p-6"
+                onInteractOutside={(event) => event.preventDefault()}
+            >
                 <DialogHeader>
                     <DialogTitle>Create a new account</DialogTitle>
                     <p className="text-sm text-gray-600">It&apos;s quick and easy.</p>
