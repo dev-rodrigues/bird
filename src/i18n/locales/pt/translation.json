@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "Bird",
+    "description": "O Bird ajuda você a se conectar com pessoas de forma simples e direta.",
+    "emailPlaceholder": "E-mail",
+    "passwordPlaceholder": "Senha",
+    "loginButton": "Entrar",
+    "registerButton": "Criar nova conta",
+    "forgotPassword": "Esqueceu sua senha?",
+    "toastSuccess": "Login realizado com sucesso",
+    "toastError": "Erro ao fazer login. Verifique suas credenciais",
+    "validation": {
+      "emailRequired": "E-mail é obrigatório",
+      "emailInvalid": "Endereço de e-mail inválido",
+      "passwordMin": "A senha deve ter pelo menos 6 caracteres"
+    }
+  },
+  "signUp": {
+    "title": "Criar uma nova conta",
+    "subtitle": "É rápido e fácil.",
+    "companyName": {
+      "label": "Razão Social",
+      "placeholder": "Nome legal da empresa",
+      "error": "Este campo é obrigatório"
+    },
+    "fantasyName": {
+      "label": "Nome Fantasia",
+      "placeholder": "Nome comercial da empresa",
+      "error": "Este campo é obrigatório"
+    },
+    "cnpj": {
+      "label": "CNPJ",
+      "placeholder": "00.000.000/0000-00",
+      "error": "Este campo é obrigatório"
+    },
+    "email": {
+      "label": "E-mail",
+      "placeholder": "email@empresa.com",
+      "error": {
+        "required": "Este campo é obrigatório",
+        "invalid": "Endereço de e-mail inválido"
+      }
+    },
+    "phone": {
+      "label": "Telefone",
+      "placeholder": "(00)00000-0000",
+      "error": "Este campo é obrigatório"
+    },
+    "password": {
+      "label": "Nova Senha",
+      "placeholder": "Crie uma senha",
+      "error": {
+        "required": "Este campo é obrigatório",
+        "minLength": "A senha deve ter pelo menos 6 caracteres"
+      }
+    },
+    "confirmPassword": {
+      "label": "Confirmar Senha",
+      "placeholder": "Confirme sua senha",
+      "error": {
+        "required": "Este campo é obrigatório",
+        "mismatch": "As senhas não coincidem"
+      }
+    },
+    "terms": {
+      "text": "Ao clicar em Cadastrar, você concorda com nossos {terms}, {privacyPolicy} e {cookiePolicy}. Você pode receber notificações por SMS e pode cancelar a qualquer momento.",
+      "terms": "Termos",
+      "privacyPolicy": "Política de Privacidade",
+      "cookiePolicy": "Política de Cookies"
+    },
+    "submitButton": {
+      "default": "Cadastrar",
+      "loading": "Carregando"
+    },
+    "success": {
+      "title": "Conta criada com sucesso!",
+      "description": "Sua empresa foi registrada com sucesso."
+    },
+    "error": {
+      "title": "Erro ao criar conta",
+      "description": "Ocorreu um erro ao tentar criar a conta."
+    }
+  }
+}

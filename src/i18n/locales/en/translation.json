@@ -1,0 +1,84 @@
+{
+  "login": {
+    "title": "Bird",
+    "description": "Bird helps you connect with people in a simple and direct way.",
+    "emailPlaceholder": "E-mail",
+    "passwordPlaceholder": "Password",
+    "loginButton": "To Enter",
+    "registerButton": "Create new account",
+    "forgotPassword": "Forgot your password?",
+    "toastSuccess": "Successfully logged in",
+    "toastError": "Error on login. Please check your credentials",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email address",
+      "passwordMin": "Password must be at least 6 characters long"
+    }
+  },
+  "signUp": {
+    "title": "Create a new account",
+    "subtitle": "It's quick and easy.",
+    "companyName": {
+      "label": "Company Name",
+      "placeholder": "Legal name of the company",
+      "error": "This field is required"
+    },
+    "fantasyName": {
+      "label": "Trade Name",
+      "placeholder": "Business name of the company",
+      "error": "This field is required"
+    },
+    "cnpj": {
+      "label": "CNPJ",
+      "placeholder": "00.000.000/0000-00",
+      "error": "This field is required"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "email@company.com",
+      "error": {
+        "required": "This field is required",
+        "invalid": "Invalid email address"
+      }
+    },
+    "phone": {
+      "label": "Phone",
+      "placeholder": "(00)00000-0000",
+      "error": "This field is required"
+    },
+    "password": {
+      "label": "New Password",
+      "placeholder": "Create a password",
+      "error": {
+        "required": "This field is required",
+        "minLength": "Password must be at least 6 characters"
+      }
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Confirm your password",
+      "error": {
+        "required": "This field is required",
+        "mismatch": "Passwords do not match"
+      }
+    },
+    "terms": {
+      "text": "By clicking Sign Up, you agree to our {terms}, {privacyPolicy} and {cookiePolicy}. You may receive SMS notifications and can opt out at any time.",
+      "terms": "Terms",
+      "privacyPolicy": "Privacy Policy",
+      "cookiePolicy": "Cookie Policy"
+    },
+    "submitButton": {
+      "default": "Sign Up",
+      "loading": "Loading"
+    },
+    "success": {
+      "title": "Account successfully created!",
+      "description": "Your company has been successfully registered."
+    },
+    "error": {
+      "title": "Error creating account",
+      "description": "An error occurred while trying to create the account."
+    }
+  }
+}

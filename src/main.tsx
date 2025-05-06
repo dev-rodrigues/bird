@@ -3,7 +3,7 @@ import {StrictMode} from 'react'
 import {BrowserRouter} from 'react-router'
 import AppRoutes from './routes.tsx'
 import 'leaflet/dist/leaflet.css';
-
+import './i18n';
 
 import './index.css'
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";

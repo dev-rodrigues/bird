@@ -14,6 +14,9 @@ import {useMutation} from "@tanstack/react-query";
 import {createCompany} from "@/services/companyService.ts";
 import {toast} from "sonner";
 import ReactInputMask from "react-input-mask";
+import * as z from "zod";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useTranslation} from "react-i18next";
 
 interface FormData {
     companyName: string
@@ -26,6 +29,20 @@ interface FormData {
 }
 
 export function SignUpDialog({isOpen, setIsOpen}: Props) {
+    const { t } = useTranslation();
+
+    const signUpSchema = z.object({
+        companyName: z.string().min(1, t("signUp.companyName.error")),
+        fantasyName: z.string().min(1, t("signUp.fantasyName.error")),
+        cnpj: z.string().min(1, t("signUp.cnpj.error")),
+        email: z.string().email(t("signUp.email.error.invalid")),
+        phone: z.string().min(1, t("signUp.phone.error")),
+        password: z.string().min(6, t("signUp.password.error.minLength")),
+        confirmPassword: z.string().min(1, t("signUp.confirmPassword.error.required")),
+    }).refine((data) => data.password === data.confirmPassword, {
+        path: ["confirmPassword"],
+        message: t("signUp.confirmPassword.error.mismatch"),
+    });
 
     const {
         control,
@@ -33,8 +50,8 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
         handleSubmit,
         formState: {errors, isLoading},
         reset,
-        watch,
     } = useForm<FormData>({
+        resolver: zodResolver(signUpSchema),
         defaultValues: {
             companyName: '',
             fantasyName: '',
@@ -49,15 +66,15 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
     const {mutate} = useMutation({
         mutationFn: createCompany,
         onSuccess: () => {
-            toast.success("Account successfully created!", {
-                description: "Your company has been successfully registered.",
+            toast.success(t("signUp.success.title"), {
+                description: t("signUp.success.description"),
             });
             reset();
             setIsOpen(false);
         },
         onError: (error) => {
-            toast.error("Error creating account", {
-                description: error.message || "An error occurred while trying to create the account.",
+            toast.error(t("signUp.error.title"), {
+                description: error.message || t("signUp.error.description"),
             });
         },
     });
@@ -70,7 +87,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
         <Dialog open={isOpen} onOpenChange={setIsOpen} modal>
             <DialogTrigger asChild>
                 <Button className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700">
-                    Create new account
+                    {t("login.registerButton")}
                 </Button>
             </DialogTrigger>
             <DialogContent
@@ -78,18 +95,17 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                 onInteractOutside={(event) => event.preventDefault()}
             >
                 <DialogHeader>
-                    <DialogTitle>Create a new account</DialogTitle>
-                    <p className="text-sm text-gray-600">It&apos;s quick and easy.</p>
+                    <DialogTitle>{t("signUp.title")}</DialogTitle>
+                    <p className="text-sm text-gray-600">{t("signUp.subtitle")}</p>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
-
                     <div className="space-y-2">
-                        <Label htmlFor="companyName">Company Name</Label>
+                        <Label htmlFor="companyName">{t("signUp.companyName.label")}</Label>
                         <Input
                             id="companyName"
-                            placeholder="Legal name of the company"
-                            {...register("companyName", {required: "This field is required"})}
+                            placeholder={t("signUp.companyName.placeholder")}
+                            {...register("companyName")}
                         />
                         {errors.companyName && (
                             <span className="text-red-600 text-sm">
@@ -99,11 +115,11 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="fantasyName">Trade Name</Label>
+                        <Label htmlFor="fantasyName">{t("signUp.fantasyName.label")}</Label>
                         <Input
                             id="fantasyName"
-                            placeholder="Business name of the company"
-                            {...register("fantasyName", {required: "This field is required"})}
+                            placeholder={t("signUp.fantasyName.placeholder")}
+                            {...register("fantasyName")}
                         />
                         {errors.fantasyName && (
                             <span className="text-red-600 text-sm">
@@ -113,11 +129,10 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="cnpj">CNPJ</Label>
+                        <Label htmlFor="cnpj">{t("signUp.cnpj.label")}</Label>
                         <Controller
                             name="cnpj"
                             control={control}
-                            rules={{required: "This field is required"}}
                             render={({field}) => (
                                 <ReactInputMask
                                     mask="99.999.999/9999-99"
@@ -128,7 +143,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                                             id="cnpj"
                                             type="text"
                                             {...inputProps}
-                                            placeholder="00.000.000/0000-00"
+                                            placeholder={t("signUp.cnpj.placeholder")}
                                         />
                                     )}
                                 </ReactInputMask>
@@ -143,12 +158,12 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
+                            <Label htmlFor="email">{t("signUp.email.label")}</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="email@company.com"
-                                {...register("email", {required: "This field is required"})}
+                                placeholder={t("signUp.email.placeholder")}
+                                {...register("email")}
                             />
                             {errors.email && (
                                 <span className="text-red-600 text-sm">
@@ -157,11 +172,10 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="phone">Phone</Label>
+                            <Label htmlFor="phone">{t("signUp.phone.label")}</Label>
                             <Controller
                                 name="phone"
                                 control={control}
-                                rules={{required: "This field is required"}}
                                 render={({field}) => (
                                     <ReactInputMask
                                         mask="(99)99999-9999"
@@ -172,7 +186,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                                                 id="phone"
                                                 type="text"
                                                 {...inputProps}
-                                                placeholder="(00)00000-0000"
+                                                placeholder={t("signUp.phone.placeholder")}
                                             />
                                         )}
                                     </ReactInputMask>
@@ -188,12 +202,12 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="password">New Password</Label>
+                            <Label htmlFor="password">{t("signUp.password.label")}</Label>
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="Create a password"
-                                {...register("password", {required: "This field is required"})}
+                                placeholder={t("signUp.password.placeholder")}
+                                {...register("password")}
                             />
                             {errors.password && (
                                 <span className="text-red-600 text-sm">
@@ -202,15 +216,12 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                             )}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="confirmPassword">Confirm Password</Label>
+                            <Label htmlFor="confirmPassword">{t("signUp.confirmPassword.label")}</Label>
                             <Input
                                 id="confirmPassword"
                                 type="password"
-                                placeholder="Confirm your password"
-                                {...register("confirmPassword", {
-                                    required: "This field is required",
-                                    validate: (value) => value === watch('password') || "Passwords do not match"
-                                })}
+                                placeholder={t("signUp.confirmPassword.placeholder")}
+                                {...register("confirmPassword")}
                             />
                             {errors.confirmPassword && (
                                 <span className="text-red-600 text-sm">
@@ -221,27 +232,27 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                     </div>
 
                     <p className="text-sm text-gray-600">
-                        By clicking Sign Up, you agree to our{" "}
-                        <a href="#" className="text-blue-600 hover:underline">
-                            Terms
-                        </a>
-                        ,{" "}
-                        <a href="#" className="text-blue-600 hover:underline">
-                            Privacy Policy
-                        </a>{" "}
-                        and{" "}
-                        <a href="#" className="text-blue-600 hover:underline">
-                            Cookie Policy
-                        </a>
-                        . You may receive SMS notifications and can opt out at any time.
+                        {t("signUp.terms.text", {
+                            terms: <a href="#" className="text-blue-600 hover:underline">
+                                {t("signUp.terms.terms")}
+                                   </a>,
+                            privacyPolicy: <a href="#" className="text-blue-600 hover:underline">
+                                {t("signUp.terms.privacyPolicy")}
+                                           </a>,
+                            cookiePolicy: <a href="#" className="text-blue-600 hover:underline">
+                                {t("signUp.terms.cookiePolicy")}
+                                          </a>
+                        })}
                     </p>
+
                     <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Loading" : "Sign Up"}
+                        {isLoading ? t("signUp.submitButton.loading") : t("signUp.submitButton.default")}
                     </Button>
                 </form>
-                <div className="text-center mt-4">
+
+                <div className="text-center mt-1">
                     <p className="text-sm text-gray-600">
-                        Already have an account?{" "}
+                        {t("login.alreadyHaveAccount")}{" "}
                         <a
                             href="#"
                             className="text-blue-600 hover:underline"
@@ -250,7 +261,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                                 setIsOpen(false);
                             }}
                         >
-                            Log In
+                            {t("login.logIn")}
                         </a>
                     </p>
                 </div>
