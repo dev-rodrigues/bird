@@ -72,6 +72,7 @@ export default function Index() {
                             placeholder={t("login.emailPlaceholder")}
                             className="w-full p-2 border rounded"
                             {...register("email")}
+                            onChange={(e) => e.target.value = e.target.value.toLowerCase()}
                         />
                         {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
 

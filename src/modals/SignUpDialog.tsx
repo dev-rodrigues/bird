@@ -164,6 +164,7 @@ export function SignUpDialog({isOpen, setIsOpen}: Props) {
                                 type="email"
                                 placeholder={t("signUp.email.placeholder")}
                                 {...register("email")}
+                                onChange={(e) => e.target.value = e.target.value.toLowerCase()}
                             />
                             {errors.email && (
                                 <span className="text-red-600 text-sm">
