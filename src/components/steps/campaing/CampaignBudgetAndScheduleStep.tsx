@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Popover, PopoverContent, PopoverTrigger} from "@radix-ui/react-popover";
 import {Button} from "@/components/ui/button.tsx";
 import {Check, ChevronsUpDown, Info} from "lucide-react";
@@ -42,6 +42,7 @@ export default function CampaignBudgetAndScheduleStep({data: result, updateData}
         date: new Date(),
         time: getCurrentTime(),
     });
+
     const [scheduleEnd, setScheduleEnd] = useState<Schedule>({
         date: new Date(),
         time: getCurrentTime(),
